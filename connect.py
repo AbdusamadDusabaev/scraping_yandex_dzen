@@ -2,6 +2,7 @@ import httplib2
 from googleapiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import date
+import time
 
 
 api_json = {
@@ -52,6 +53,7 @@ def record_publication(channel_id, channel_name, publication_name, publication_t
     body = {"values": values}
     sheet.values().update(spreadsheetId=sheet_id, range=f"Publications!A{index}",
                           valueInputOption="RAW", body=body).execute()
+    time.sleep(1)
     print(f"[INFO] Публикация {publication_name} успешно записана в Google Sheet")
 
 
