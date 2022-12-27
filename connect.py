@@ -42,13 +42,13 @@ def get_channel_list():
 
 
 def record_publication(channel_id, channel_name, publication_name, publication_type, publication_date, views,
-                       end_views, percent_end_views, views_time, comments, likes, amount_publication):
+                       end_views, percent_end_views, views_time, comments, likes, amount_publication, publication_link):
     service = get_service_sacc()
     sheet = service.spreadsheets()
     today = str(date.today())
     values = [[channel_id, channel_name, publication_name,
                publication_type, str(publication_date), views, end_views,
-               percent_end_views, views_time, comments, likes, today]]
+               percent_end_views, views_time, comments, likes, today, publication_link]]
     index = amount_publication + 1
     body = {"values": values}
     sheet.values().update(spreadsheetId=sheet_id, range=f"Publications!A{index}",

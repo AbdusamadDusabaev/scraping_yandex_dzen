@@ -25,6 +25,7 @@ def get_info_about_channel_page(url, channel_id, channel_name):
     json_object = response.json()
     publications = json_object["items"]
     for publication in publications:
+        publication_link = publication["link"]
         publication_date = publication["publication_date"]
         publication_date = datetime.utcfromtimestamp(int(publication_date))
         today = datetime.today()
@@ -67,7 +68,8 @@ def get_info_about_channel_page(url, channel_id, channel_name):
         record_publication(channel_id=channel_id, channel_name=channel_name, publication_name=publication_title,
                            publication_type=publication_type, publication_date=publication_date, views=views,
                            end_views=end_views, percent_end_views=percent_end_views, views_time=views_time,
-                           comments=comments, likes=likes, amount_publication=amount_publication)
+                           comments=comments, likes=likes, amount_publication=amount_publication,
+                           publication_link=publication_link)
     if len(publications) == 0:
         next_page = "stop"
     else:
@@ -106,12 +108,17 @@ def parsing():
 
 
 def main():
-    print('[INFO] Программа запущена')
-    schedule.every().days.at("08:30").do(parsing)
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    mode = input("Выберете режим запуска парсера: 1 - в штатном режиме, 2 - запустить сейчас")
+    if mode == "1":
+        print('[INFO] Программа запущена в штатном режиме')
+        schedule.every().days.at("08:30").do(parsing)
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
+    elif mode == "2":
+        print("[INFO] Программа запущена в срочном режиме")
+        parsing()
 
 
 if __name__ == "__main__":
-    parsing()
+    main()
